@@ -11,11 +11,17 @@ const airportsReducer = (state: RootState.airports = initialAirportsState, actio
     let nextState : ?Array<Airport>;
 
     switch (action.type) {
-        case actions.Airports.FETCH_AIRPORTS:
-            nextState = { ...state, isFetching: true };
-            break;
         case actions.Airports.REFRESH_AIRPORTS:
-            nextState = { ...state, items: action.airports, isFetching: false };
+            switch (action.airportType) {
+                case 'origin':
+                    nextState = { ...state, origin: action.airports };
+                    break;
+                case 'destination':
+                    nextState = { ...state, destination: action.airports };
+                    break;
+                default:
+                    break;
+            }
             break;
         default:
     }
@@ -43,6 +49,22 @@ const initialFiltersState = initialState.filters;
 
 const filtersReducer = (state: RootState.filters = initialFiltersState, action: Object): Array<Object> => {
     let nextState : ?Array<Object>;
+
+    switch (action.type) {
+        case actions.Airports.SELECT_AIRPORT:
+            switch (action.airportType) {
+                case 'origin':
+                    nextState = { ...state, origin: action.code };
+                    break;
+                case 'destination':
+                    nextState = { ...state, destination: action.code };
+                    break;
+                default:
+                    break;
+            }
+            break;
+        default:
+    }
 
     return nextState || state;
 };

@@ -25,11 +25,20 @@ class Header extends Component<{ originAirports: Array<Airport>, destinationAirp
         };
     }
 
-    onOriginChange = (searchTerm: String, type: AirportType) => {
+    onOriginChange = (searchTerm: String) => {
         this.setState({ originSearchTerm: searchTerm })
 
         const { dispatch } = this.props;
         dispatch(actions.Airports.fetch(searchTerm, 'origin'));
+    };
+
+    onOriginSelect = (code: String) => {
+        const { originAirports, dispatch } = this.props;
+
+        const airport = originAirports.filter(a => a.code === code)[0];
+
+        this.setState({ originSearchTerm: `${airport.code} - ${airport.city}` })
+        dispatch(actions.Filters.selectAirport(code, 'origin'));
     };
 
     onDestinationChange = (searchTerm: String) => {
@@ -37,6 +46,15 @@ class Header extends Component<{ originAirports: Array<Airport>, destinationAirp
 
         const { dispatch } = this.props;
         dispatch(actions.Airports.fetch(searchTerm, 'destination'));
+    };
+
+    onDestinationSelect = (code: String) => {
+        const { destinationAirports, dispatch } = this.props;
+
+        const airport = destinationAirports.filter(a => a.code === code)[0];
+
+        this.setState({ destinationSearchTem: `${airport.code} - ${airport.city}` })
+        dispatch(actions.Filters.selectAirport(code, 'destination'));
     };
 
     render() {
@@ -47,26 +65,28 @@ class Header extends Component<{ originAirports: Array<Airport>, destinationAirp
             <header className="App-header">
                 <h1 className="App-title">Flight Finder</h1>
                 <Autocomplete
-                    getItemValue={(item) => `${item.code} - ${item.name} - ${item.city}, ${item.state}`}
+                    getItemValue={(item) => item.code}
                     items={originAirports}
                     renderItem={(item, isHighlighted) =>
-                        <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                            {item.label}
+                        <div key={item.code} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                            {`${item.code} - ${item.city}`}
                         </div>
                     }
                     value={originSearchTerm}
                     onChange={(e) => this.onOriginChange(e.target.value, 'origin')}
+                    onSelect={(value) => this.onOriginSelect(value, 'destination')}
                 />
                 <Autocomplete
-                    getItemValue={(item) => `${item.code} - ${item.name} - ${item.city}, ${item.state}`}
+                    getItemValue={(item) => item.code}
                     items={destinationAirports}
                     renderItem={(item, isHighlighted) =>
-                        <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                            {item.label}
+                        <div key={item.code} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                            {`${item.code} - ${item.city}`}
                         </div>
                     }
                     value={destinationSearchTem}
                     onChange={(e) => this.onDestinationChange(e.target.value, 'destination')}
+                    onSelect={(value) => this.onDestinationSelect(value, 'destination')}
                 />
             </header>
         );

@@ -2,7 +2,6 @@
 
 type Airport = {
     code: String,
-    name: String,
     city: String,
     state: String,
 };

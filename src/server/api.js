@@ -3,10 +3,25 @@
 import type { Airport } from '../state/index';
 import { csv } from 'd3-fetch';
 
-async function fetchAirports(): Promise<Array<Airport>> {
-    const resp = await csv(`${process.env.PUBLIC_URL}/2015-AA-UA-DL-flights.csv`).then(function(data) {
-        // TODO: filter airports by search term
-    });
+async function fetchAirports(searchTerm: String): Promise<Array<Airport>> {
+    const keys = [];
+    const resp = await csv(`${process.env.PUBLIC_URL}/2015-AA-UA-DL-flights.csv`,
+        function (d) {
+            const airport: Airport = {
+                code: d.ORIGIN.trim().toUpperCase(),
+                city: d.ORIGIN_CITY_NAME.trim(),
+                state: d.ORIGIN_STATE_ABR.trim().toUpperCase(),
+            };
+
+
+            if (!keys.includes(airport.code) &&
+                (airport.code.includes(searchTerm.toUpperCase())
+            || airport.city.toUpperCase().includes(searchTerm.toUpperCase()))) {
+                keys.push(airport.code);
+                return airport;
+            }
+        }
+    );
     return resp;
 }
 
