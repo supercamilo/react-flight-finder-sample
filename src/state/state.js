@@ -61,6 +61,7 @@ export type {
     AirportType,
     Airline,
     Flight,
+    SortType,
     RootState,
 };
 

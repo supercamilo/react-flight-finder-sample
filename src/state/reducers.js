@@ -51,7 +51,7 @@ const filtersReducer = (state: RootState.filters = initialFiltersState, action: 
     let nextState : ?Array<Object>;
 
     switch (action.type) {
-        case actions.Airports.SELECT_AIRPORT:
+        case actions.Filters.SELECT_AIRPORT:
             switch (action.airportType) {
                 case 'origin':
                     nextState = { ...state, origin: action.code };
@@ -62,6 +62,9 @@ const filtersReducer = (state: RootState.filters = initialFiltersState, action: 
                 default:
                     break;
             }
+            break;
+        case actions.Filters.CHANGE_SORT:
+            nextState = { ...state, sortBy: action.sortBy };
             break;
         default:
     }
