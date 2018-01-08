@@ -12,12 +12,14 @@ const mapStateToProps = (state: RootState) => {
     return {
         originAirports: state.airports.origin,
         destinationAirports: state.airports.destination,
+        origin: state.filters.origin,
+        destination:  state.filters.destination,
         sortBy: state.filters.sortBy,
         airlines: state.airlines,
     };
 };
 
-class Header extends Component<{ originAirports: Array<Airport>, destinationAirports: Array<Airport>, sortBy: SortType }
+class Header extends Component<{ originAirports: Array<Airport>, destinationAirports: Array<Airport>, origin: Airport, destination: Airport, sortBy: SortType }
     , { originSearchTerm: String, destinationSearchTem: String }> {
     constructor(props) {
         super(props);
@@ -30,8 +32,8 @@ class Header extends Component<{ originAirports: Array<Airport>, destinationAirp
     onOriginChange = (searchTerm: String) => {
         this.setState({ originSearchTerm: searchTerm })
 
-        const { dispatch } = this.props;
-        dispatch(actions.Airports.fetch(searchTerm, 'origin'));
+        const { destination, dispatch } = this.props;
+        dispatch(actions.Airports.fetch(searchTerm, 'origin', destination.code));
     };
 
     onOriginSelect = (code: String) => {
@@ -46,8 +48,8 @@ class Header extends Component<{ originAirports: Array<Airport>, destinationAirp
     onDestinationChange = (searchTerm: String) => {
         this.setState({ destinationSearchTem: searchTerm })
 
-        const { dispatch } = this.props;
-        dispatch(actions.Airports.fetch(searchTerm, 'destination'));
+        const { origin, dispatch } = this.props;
+        dispatch(actions.Airports.fetch(searchTerm, 'destination', origin));
     };
 
     onDestinationSelect = (code: String) => {
@@ -86,6 +88,7 @@ class Header extends Component<{ originAirports: Array<Airport>, destinationAirp
                         value={originSearchTerm}
                         onChange={(e) => this.onOriginChange(e.target.value, 'origin')}
                         onSelect={(value) => this.onOriginSelect(value, 'destination')}
+                        inputProps={{ placeholder: 'From – City or Airport' }}
                     />
                     <Autocomplete
                         getItemValue={(item) => item.code}
@@ -98,6 +101,7 @@ class Header extends Component<{ originAirports: Array<Airport>, destinationAirp
                         value={destinationSearchTem}
                         onChange={(e) => this.onDestinationChange(e.target.value, 'destination')}
                         onSelect={(value) => this.onDestinationSelect(value, 'destination')}
+                        inputProps={{ placeholder: 'To – City or Airport' }}
                     />
                 </Row>
                 <Row>
@@ -107,7 +111,7 @@ class Header extends Component<{ originAirports: Array<Airport>, destinationAirp
                         <button type="button" className={sortBy === 'duration' ? 'selected-sort' : ''} onClick={() => this.onSortChange('duration')}>Duration</button>
                     </Col>
                     <Col>
-                        <ul class="checkbox-group">
+                        <ul className="checkbox-group">
                             {airlinesFilter}
                         </ul>
                     </Col>

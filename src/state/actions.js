@@ -6,12 +6,12 @@ import type { AirportType, SortType } from './state';
 const Airports = {
     FETCH_AIRPORTS: 'FETCH_AIRPORTS',
     REFRESH_AIRPORTS: 'REFRESH_AIRPORTS',
-    fetch: (searchTerm: String, airportType: AirportType) => {
+    fetch: (searchTerm: String, airportType: AirportType, counterpartCode: String) => {
         return function (dispatch): any {
             dispatch({
                 type: Airports.FETCH_AIRPORTS,
             });
-            return api.fetchAirports(searchTerm).then((airports) => {
+            return api.fetchAirports(searchTerm, airportType, counterpartCode).then((airports) => {
                 dispatch({
                     type: Airports.REFRESH_AIRPORTS,
                     airportType,
@@ -33,6 +33,13 @@ const Filters = {
                 airportType,
                 code,
             });
+            // return api.fetchFlights(searchTerm).then((airports) => {
+            //     dispatch({
+            //         type: Airports.REFRESH_AIRPORTS,
+            //         airportType,
+            //         airports,
+            //     });
+            // });
         };
     },
     changeSort: (sortBy: SortType) => {
