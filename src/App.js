@@ -1,20 +1,20 @@
+// @flow
+
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Header, FilterBar, FlightChart } from './components';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Flight Finder</h1>
-        </header>
-        <p className="App-intro">
+    render() {
 
-        </p>
-      </div>
-    );
-  }
+        return (
+            <div className="App">
+                <Header />
+                <FilterBar />
+                <FlightChart />
+            </div>
+        );
+    }
 }
 
 export default App;
