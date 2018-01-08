@@ -6,9 +6,9 @@ class FlightChart extends Component {
     render() {
 
         return (
-            <nav>
+            <section>
                 I'm the flight chart
-            </nav>
+            </section>
         );
     }
 }
