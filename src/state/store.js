@@ -4,7 +4,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
 import { initialState } from './state';
-import type { Store, Question } from './state';
+import type { Store } from './state';
 
 class StoreProvider {
     static init = (): Store => {
