@@ -1,26 +1,33 @@
 // @flow
 
 import React, { Component } from 'react';
-import type { RootState, Flight } from '../state/state';
+import type { RootState, Flight, Filters } from '../state/state';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state: RootState) => {
     return {
         flights: state.flights,
+        filters: state.filters,
     };
 };
 
-class FlightChart extends Component<{ flights?: Array<Flight> }> {
+class FlightChart extends Component<{ flights?: Array<Flight>, filters?: Filters }> {
     static defaultProps = {
         flights: [],
     };
 
     render() {
 
-        const { flights } = this.props;
+        const { flights, filters } = this.props;
+
+        const filteredFlights = flights.filter((f) => filters.airlines.has(f.airlineCode));
+
+        filteredFlights.sort(function(a, b) {
+            return a[filters.sortBy] - b[filters.sortBy];
+        });
 
         // TODO: fix display formats
-        const flightList = flights.map((flight) =>
+        const flightList = filteredFlights.map((flight) =>
             <li>
                 {`${flight.airlineCode} ${flight.number}`}
                 <br />
@@ -28,7 +35,7 @@ class FlightChart extends Component<{ flights?: Array<Flight> }> {
                 <br />
                 {`${flight.departure} > ${flight.arrival}`}
                 <br />
-                {`${flight.length}mi`}
+                {`${flight.duration}mi`}
                 <br />
                 {`${flight.averageSpeed}mph`}
             </li>

@@ -20,7 +20,7 @@ type Flight = {
     destination: String,
     departure: Number,
     arrival: Number,
-    length: Number,
+    duration: Number,
     distance: Number,
     averageSpeed: Number,
 };
@@ -31,7 +31,7 @@ type Filters = {
     origin: String,
     destination: String,
     sortBy: SortType,
-    airlines: Array<String>,
+    airlines?: Set<String>,
 };
 
 type RootState = {
@@ -55,7 +55,7 @@ const initialState: RootState = {
         origin: null,
         destination: null,
         sortBy: 'departure',
-        airlines: [],
+        airlines: new Set(),
     },
 };
 

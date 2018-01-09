@@ -71,12 +71,19 @@ class Header extends Component<{ originAirports: Array<Airport>, destinationAirp
         dispatch(actions.Filters.changeSort(sortBy));
     };
 
+    onAirlineFilterChange = (code: String, value: Boolean) => {
+        const { dispatch } = this.props;
+        dispatch(actions.Filters.changeAirlineFilter(code, value));
+    };
+
     render() {
         const { originSearchTerm, destinationSearchTem } = this.state;
         const { originAirports, destinationAirports, sortBy, airlines } = this.props;
 
         const airlinesFilter = airlines.map((airline) =>
-            <li><input type="checkbox">{airline.name}</input></li>
+            (<li>
+                <input type="checkbox" defaultChecked onChange={(e) => this.onAirlineFilterChange(airline.code, e.target.checked)} />{airline.name}
+            </li>)
         );
 
         return (

@@ -1,11 +1,11 @@
 // @flow
 
-import type { Airport, Flight } from '../state/state';
+import type { Airport, Flight, Airline } from '../state/state';
 import { csv } from 'd3-fetch';
 
 async function fetchAirports(searchTerm: String, airportType, counterpartCode: String): Promise<Array<Airport>> {
     const keys = [];
-    const resp = await csv(`${process.env.PUBLIC_URL}/2015-AA-UA-DL-flights.csv`,
+    const resp = await csv(`${process.env.PUBLIC_URL}/data/2015-AA-UA-DL-flights.csv`,
         function (d) {
             const airportPrefix = airportType === 'origin' ? 'ORIGIN' : 'DEST';
             const counterpartPrefix = airportType === 'origin' ? 'DEST' : 'ORIGIN';
@@ -27,8 +27,8 @@ async function fetchAirports(searchTerm: String, airportType, counterpartCode: S
     return resp;
 }
 
-async function fetchFlights(origin: String, destination: String): Promise<Array<Airport>> {
-    const resp = await csv(`${process.env.PUBLIC_URL}/2015-AA-UA-DL-flights.csv`,
+async function fetchFlights(origin: String, destination: String): Promise<Array<Flight>> {
+    const resp = await csv(`${process.env.PUBLIC_URL}/data/2015-AA-UA-DL-flights.csv`,
         function (d) {
             if ((origin || destination) && // at least one to filter
                 (!origin || d['ORIGIN'] === origin) &&
@@ -45,10 +45,31 @@ async function fetchFlights(origin: String, destination: String): Promise<Array<
                 };
 
                 // TODO: verify this formula and take date and maybe timezone into account
-                flight.length = flight.arrival - flight.departure;
-                flight.averageSpeed = flight.distance / flight.length;
+                flight.duration = flight.arrival - flight.departure;
+                flight.averageSpeed = flight.distance / flight.duration;
 
                 return flight;
+            }
+        }
+    );
+    return resp;
+}
+
+async function fetchAirlines(codes: Array<String>): Promise<Array<Airline>> {
+    if (!codes || !Array.isArray(codes) || codes.length < 1) {
+        return [];
+    }
+    const resp = await csv(`${process.env.PUBLIC_URL}/data/airlines.csv`,
+        function (d) {
+            const airlineFields = d['Description'].toString().split(':');
+            const airlineCode = airlineFields[1].trim();
+            if (codes.includes(airlineCode)) {
+                const airline: Airline = {
+                    code: airlineCode,
+                    name: airlineFields[0].trim(),
+                };
+
+                return airline;
             }
         }
     );
@@ -58,4 +79,5 @@ async function fetchFlights(origin: String, destination: String): Promise<Array<
 export {
     fetchAirports,
     fetchFlights,
+    fetchAirlines,
 };

@@ -33,6 +33,8 @@ const Filters = {
     SELECT_ORIGIN: 'SELECT_ORIGIN',
     SELECT_DESTINATION: 'SELECT_DESTINATION',
     CHANGE_SORT: 'CHANGE_SORT',
+    ADD_AIRLINE_FILTER: 'ADD_AIRLINE_FILTER',
+    REMOVE_AIRLINE_FILTER: 'REMOVE_AIRLINE_FILTER',
     selectOrigin: (origin: String, destination: String) => {
         return function (dispatch): any {
             dispatch({
@@ -62,6 +64,14 @@ const Filters = {
             });
         };
     },
+    changeAirlineFilter: (code: String, value: Boolean) => {
+        return function (dispatch): any {
+            dispatch({
+                type: value ? Filters.ADD_AIRLINE_FILTER : Filters.REMOVE_AIRLINE_FILTER,
+                code,
+            });
+        };
+    },
 };
 
 const Flights = {
@@ -72,6 +82,20 @@ const Flights = {
                 type: Flights.REFRESH_FLIGHTS,
                 flights,
             });
+            const airlineCodes = [...new Set( flights.map(obj => obj.airlineCode)) ];
+            Airlines.fetchAirlines(dispatch, airlineCodes);
+        });
+    },
+};
+
+const Airlines = {
+    REFRESH_AIRLINES: 'REFRESH_AIRLINES',
+    fetchAirlines: (dispatch: any, airlineCodes: Array<String>) => {
+        return api.fetchAirlines(airlineCodes).then((airlines) => {
+            dispatch({
+                type: Airlines.REFRESH_AIRLINES,
+                airlines,
+            });
         });
     },
 };
@@ -81,4 +105,5 @@ export {
     Airports,
     Filters,
     Flights,
+    Airlines,
 };

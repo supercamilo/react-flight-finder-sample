@@ -28,6 +28,13 @@ const initialAirlinesState = initialState.airlines;
 const airlinesReducer = (state: RootState.airlines = initialAirlinesState, action: Object): Array<Airline> => {
     let nextState : ?Array<Airline>;
 
+    switch (action.type) {
+        case actions.Airlines.REFRESH_AIRLINES:
+            nextState = action.airlines;
+            break;
+        default:
+    }
+
     return nextState || state;
 };
 
@@ -60,6 +67,17 @@ const filtersReducer = (state: RootState.filters = initialFiltersState, action: 
             break;
         case actions.Filters.CHANGE_SORT:
             nextState = { ...state, sortBy: action.sortBy };
+            break;
+        case actions.Airlines.REFRESH_AIRLINES:
+            nextState = { ...state, airlines: new Set(action.airlines.map(a => a.code)) };
+            break;
+        case actions.Filters.ADD_AIRLINE_FILTER:
+            nextState = { ...state };
+            nextState.airlines.add(action.code);
+            break;
+        case actions.Filters.REMOVE_AIRLINE_FILTER:
+            nextState = { ...state };
+            nextState.airlines.delete(action.code);
             break;
         default:
     }
