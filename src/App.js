@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import './App.css';
-import { FilterBar, FlightChart } from './components';
+import { AirportSelector, FilterBar, FlightChart } from './components';
 import { StoreProvider } from './state/index';
 import { Provider } from 'react-redux';
 import { Grid, Row } from 'react-flexbox-grid';
@@ -21,6 +21,7 @@ class App extends Component {
                         </header>
                     </Row>
                     <Row style={{ paddingBottom: 0}}>
+                        <AirportSelector />
                         <FilterBar />
                     </Row>
                     <Row style={{ paddingTop: 0}}>

@@ -1,3 +1,16 @@
 {
-  "extends": "react-app"
+  "extends": ["react-app", "plugin:flowtype/recommended"],
+  "parser": "babel-eslint",
+  "env": {
+    "es6": true
+  },
+  "ecmaFeatures": {
+    "modules": true
+  },
+  "plugins": [
+    "flowtype"
+  ],
+  "rules": {
+    "jsx-a11y/href-no-hash": 0
+  }
 }
