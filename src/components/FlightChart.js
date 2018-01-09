@@ -43,7 +43,7 @@ class FlightChart extends Component<{ flights?: Array<Flight>, filters?: Filters
 
         const minutesInADay = 1440;
 
-        const flightList = filteredFlights.map((flight) => {
+        const flightList = filteredFlights.map((flight, index) => {
             const width = ((flight.duration / minutesInADay) * 100) + '%';
             const departure = moment(flight.departure);
             const arrival = moment(flight.arrival);
@@ -55,7 +55,7 @@ class FlightChart extends Component<{ flights?: Array<Flight>, filters?: Filters
             const airline = airlines.filter((a) => a.code === flight.airlineCode)[0];
 
             return (
-                <Row key={flight.airlineCode+flight.number} className="flighRow">
+                <Row key={`${index}-${flight.airlineCode}-${flight.number}`} className="flighRow">
                     <div
                         className="flightBar"
                         style={{ width, marginLeft }}

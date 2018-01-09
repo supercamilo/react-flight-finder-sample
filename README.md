@@ -27,8 +27,9 @@ The following tools were used:
 
 ## TODO
 
-* Unit tests
+* Unit tests.
 * Implement logic to handle flights ending the next day. This currently triggers some display and sorting issues on the `FlightChart` component.
+* Enhance the `FlightChart` component using an advanced Gantt chart component.
 
 ## Data
 
