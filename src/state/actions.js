@@ -1,20 +1,26 @@
 // @flow
 
 import { api } from '../server';
-import type { AirportType, SortType } from './state';
+import type { SortType } from './state';
 
 const Airports = {
-    FETCH_AIRPORTS: 'FETCH_AIRPORTS',
-    REFRESH_AIRPORTS: 'REFRESH_AIRPORTS',
-    fetch: (searchTerm: String, airportType: AirportType, counterpartCode: String) => {
+    REFRESH_ORIGIN: 'REFRESH_ORIGIN',
+    REFRESH_DESTINATION: 'REFRESH_DESTINATION',
+    fetchOrigin: (searchTerm: String, destination: String) => {
         return function (dispatch): any {
-            dispatch({
-                type: Airports.FETCH_AIRPORTS,
-            });
-            return api.fetchAirports(searchTerm, airportType, counterpartCode).then((airports) => {
+            return api.fetchAirports(searchTerm, 'origin', destination).then((airports) => {
                 dispatch({
-                    type: Airports.REFRESH_AIRPORTS,
-                    airportType,
+                    type: Airports.REFRESH_ORIGIN,
+                    airports,
+                });
+            });
+        };
+    },
+    fetchDestination: (searchTerm: String, origin: String) => {
+        return function (dispatch): any {
+            return api.fetchAirports(searchTerm, 'destination', origin).then((airports) => {
+                dispatch({
+                    type: Airports.REFRESH_DESTINATION,
                     airports,
                 });
             });
@@ -24,23 +30,29 @@ const Airports = {
 
 
 const Filters = {
-    SELECT_AIRPORT: 'SELECT_AIRPORT',
+    SELECT_ORIGIN: 'SELECT_ORIGIN',
+    SELECT_DESTINATION: 'SELECT_DESTINATION',
     CHANGE_SORT: 'CHANGE_SORT',
-    selectAirport: (code: String, airportType: AirportType) => {
+    selectOrigin: (origin: String, destination: String) => {
         return function (dispatch): any {
             dispatch({
-                type: Filters.SELECT_AIRPORT,
-                airportType,
-                code,
+                type: Filters.SELECT_ORIGIN,
+                origin,
             });
-            // return api.fetchFlights(searchTerm).then((airports) => {
-            //     dispatch({
-            //         type: Airports.REFRESH_AIRPORTS,
-            //         airportType,
-            //         airports,
-            //     });
-            // });
+            return Filters.selectAirports(dispatch, origin, destination);
         };
+    },
+    selectDestination: (origin: String, destination: String) => {
+        return function (dispatch): any {
+            dispatch({
+                type: Filters.SELECT_DESTINATION,
+                destination,
+            });
+            return Filters.selectAirports(dispatch, origin, destination);
+        };
+    },
+    selectAirports: (dispatch: any, origin: String, destination: String) => {
+        return Flights.fetchFlights(dispatch, origin, destination);
     },
     changeSort: (sortBy: SortType) => {
         return function (dispatch): any {
@@ -52,8 +64,21 @@ const Filters = {
     },
 };
 
+const Flights = {
+    REFRESH_FLIGHTS: 'REFRESH_FLIGHTS',
+    fetchFlights: (dispatch: any, origin: String, destination: String) => {
+        return api.fetchFlights(origin, destination).then((flights) => {
+            dispatch({
+                type: Flights.REFRESH_FLIGHTS,
+                flights,
+            });
+        });
+    },
+};
+
 
 export {
     Airports,
     Filters,
+    Flights,
 };

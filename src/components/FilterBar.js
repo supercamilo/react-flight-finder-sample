@@ -19,8 +19,13 @@ const mapStateToProps = (state: RootState) => {
     };
 };
 
-class Header extends Component<{ originAirports: Array<Airport>, destinationAirports: Array<Airport>, origin: Airport, destination: Airport, sortBy: SortType }
+class Header extends Component<{ originAirports: Array<Airport>, destinationAirports: Array<Airport>, origin?: Airport, destination?: Airport, sortBy: SortType }
     , { originSearchTerm: String, destinationSearchTem: String }> {
+    static defaultProps = {
+        origin: null,
+        destination: null,
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -33,32 +38,32 @@ class Header extends Component<{ originAirports: Array<Airport>, destinationAirp
         this.setState({ originSearchTerm: searchTerm })
 
         const { destination, dispatch } = this.props;
-        dispatch(actions.Airports.fetch(searchTerm, 'origin', destination.code));
+        dispatch(actions.Airports.fetchOrigin(searchTerm, destination));
     };
 
     onOriginSelect = (code: String) => {
-        const { originAirports, dispatch } = this.props;
+        const { originAirports, destination, dispatch } = this.props;
 
         const airport = originAirports.filter(a => a.code === code)[0];
 
         this.setState({ originSearchTerm: `${airport.code} - ${airport.city}` })
-        dispatch(actions.Filters.selectAirport(code, 'origin'));
+        dispatch(actions.Filters.selectOrigin(code, destination));
     };
 
     onDestinationChange = (searchTerm: String) => {
         this.setState({ destinationSearchTem: searchTerm })
 
         const { origin, dispatch } = this.props;
-        dispatch(actions.Airports.fetch(searchTerm, 'destination', origin));
+        dispatch(actions.Airports.fetchDestination(searchTerm, origin));
     };
 
     onDestinationSelect = (code: String) => {
-        const { destinationAirports, dispatch } = this.props;
+        const { destinationAirports, origin, dispatch } = this.props;
 
         const airport = destinationAirports.filter(a => a.code === code)[0];
 
         this.setState({ destinationSearchTem: `${airport.code} - ${airport.city}` })
-        dispatch(actions.Filters.selectAirport(code, 'destination'));
+        dispatch(actions.Filters.selectDestination(origin, code));
     };
 
     onSortChange = (sortBy: SortType) => {

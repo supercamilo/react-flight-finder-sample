@@ -11,17 +11,11 @@ const airportsReducer = (state: RootState.airports = initialAirportsState, actio
     let nextState : ?Array<Airport>;
 
     switch (action.type) {
-        case actions.Airports.REFRESH_AIRPORTS:
-            switch (action.airportType) {
-                case 'origin':
-                    nextState = { ...state, origin: action.airports };
-                    break;
-                case 'destination':
-                    nextState = { ...state, destination: action.airports };
-                    break;
-                default:
-                    break;
-            }
+        case actions.Airports.REFRESH_ORIGIN:
+            nextState = { ...state, origin: action.airports };
+            break;
+        case actions.Airports.REFRESH_DESTINATION:
+            nextState = { ...state, destination: action.airports };
             break;
         default:
     }
@@ -39,8 +33,15 @@ const airlinesReducer = (state: RootState.airlines = initialAirlinesState, actio
 
 const initialFlightsState = initialState.flights;
 
-const fligthsReducer = (state: RootState.flights = initialFlightsState, action: Object): Array<Flight> => {
+const flightsReducer = (state: RootState.flights = initialFlightsState, action: Object): Array<Flight> => {
     let nextState : ?Array<Flight>;
+
+    switch (action.type) {
+        case actions.Flights.REFRESH_FLIGHTS:
+            nextState = action.flights;
+            break;
+        default:
+    }
 
     return nextState || state;
 };
@@ -51,17 +52,11 @@ const filtersReducer = (state: RootState.filters = initialFiltersState, action: 
     let nextState : ?Array<Object>;
 
     switch (action.type) {
-        case actions.Filters.SELECT_AIRPORT:
-            switch (action.airportType) {
-                case 'origin':
-                    nextState = { ...state, origin: action.code };
-                    break;
-                case 'destination':
-                    nextState = { ...state, destination: action.code };
-                    break;
-                default:
-                    break;
-            }
+        case actions.Filters.SELECT_ORIGIN:
+            nextState = { ...state, origin: action.origin };
+            break;
+        case actions.Filters.SELECT_DESTINATION:
+            nextState = { ...state, destination: action.destination };
             break;
         case actions.Filters.CHANGE_SORT:
             nextState = { ...state, sortBy: action.sortBy };
@@ -75,7 +70,7 @@ const filtersReducer = (state: RootState.filters = initialFiltersState, action: 
 const reducers = combineReducers({
     airports: airportsReducer,
     airlines: airlinesReducer,
-    flights: fligthsReducer,
+    flights: flightsReducer,
     filters: filtersReducer,
 
 });

@@ -16,7 +16,8 @@ type Airline = {
 type Flight = {
     number: Number,
     airlineCode: String,
-    airportCode: String,
+    origin: String,
+    destination: String,
     departure: Number,
     arrival: Number,
     length: Number,
@@ -26,6 +27,13 @@ type Flight = {
 
 type SortType = 'departure' | 'arrival' | 'duration';
 
+type Filters = {
+    origin: String,
+    destination: String,
+    sortBy: SortType,
+    airlines: Array<String>,
+};
+
 type RootState = {
     airports: {
         origin: Array<Airport>,
@@ -33,12 +41,7 @@ type RootState = {
     },
     airlines: Array<Airline>,
     flights: Array<Flight>,
-    filters: {
-        origin: Airport,
-        destination: Airport,
-        sortBy: SortType,
-        airlines: [],
-    },
+    filters: Filters,
 };
 
 const initialState: RootState = {
@@ -49,8 +52,8 @@ const initialState: RootState = {
     airlines: [],
     flights: [],
     filters: {
-        origin: {},
-        destination: {},
+        origin: null,
+        destination: null,
         sortBy: 'departure',
         airlines: [],
     },
