@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import type { RootState, Flight, Filters, Airline } from '../state/state';
+import { FlightDetails } from './';
 import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import moment from 'moment';
@@ -49,12 +50,9 @@ class FlightChart extends Component<{ flights?: Array<Flight>, filters?: Filters
         const flightList = filteredFlights.map((flight, index) => {
             const width = ((flight.duration / minutesInADay) * 100) + '%';
             const departure = moment(flight.departure);
-            const arrival = moment(flight.arrival);
             const midnight = departure.clone().startOf('day');
             const startMinutes = departure.diff(midnight, 'minutes');
             const marginLeft = ((startMinutes / minutesInADay) * 100) + '%';
-            const averageSpeed = Number(flight.averageSpeed).toFixed(2);
-            const duration = moment.duration(arrival.diff(departure));
             const airline = airlines.filter((a) => a.code === flight.airlineCode)[0];
 
             return (
@@ -64,19 +62,7 @@ class FlightChart extends Component<{ flights?: Array<Flight>, filters?: Filters
                         style={{ width, marginLeft }}
                     >
                         {flight.airlineCode}{flight.number}
-                        <div className="flightDetails">
-                            <strong><h3>{`${airline.name} ${flight.number}`}</h3></strong>
-                            <br />
-                            {flight.origin}<strong>&nbsp;&#8594;&nbsp;</strong>{flight.destination}
-                            <br />
-                            {`${departure.format('HH:mma')}   ${arrival.format('HH:mma')}`}
-                            <br />
-                            {`${duration.hours()}h ${duration.minutes()}m`}
-                            <br />
-                            {`${flight.distance}mi`}
-                            <br />
-                            {`${averageSpeed}mph`}
-                        </div>
+                        <FlightDetails flight={flight} airline={airline}/>
                     </div>
                 </Row>
             );

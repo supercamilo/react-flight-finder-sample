@@ -29,39 +29,98 @@ async function fetchAirports(searchTerm: String, airportType, counterpartCode: S
 }
 
 async function fetchFlights(origin: String, destination: String): Promise<Array<Flight>> {
-    const resp = await csv(`${process.env.PUBLIC_URL}/data/2015-AA-UA-DL-flights.csv`,
-        function (d) {
+    const resp = await csv(
+        `${process.env.PUBLIC_URL}/data/2015-AA-UA-DL-flights.csv`,
+        function (data) {
             if ((origin || destination) && // at least one to filter
-                (!origin || d['ORIGIN'] === origin) &&
-                (!destination || d['DEST'] === destination)
+                (!origin || data['ORIGIN'] === origin) &&
+                (!destination || data['DEST'] === destination)
             ) {
-                const departure = d['DEP_TIME'].padStart(4, '0');
-                const departureMmt = moment(`${d['FL_DATE']} ${departure.substring(0, 2)}:${departure.substring(2, 4)}:00`);
-                const arrival = d['ARR_TIME'].padStart(4, '0');
-                const arrivalMmt = moment(`${d['FL_DATE']} ${arrival.substring(0, 2)}:${arrival.substring(2, 4)}:00`);
+                const departure = data['DEP_TIME'].padStart(4, '0');
+                const departureMmt = moment(`${data['FL_DATE']} ${departure.substring(0, 2)}:${departure.substring(2, 4)}:00`);
+                const arrival = data['ARR_TIME'].padStart(4, '0');
+                const arrivalMmt = moment(`${data['FL_DATE']} ${arrival.substring(0, 2)}:${arrival.substring(2, 4)}:00`);
 
                 const flight: Flight = {
-                    number: Number(d['FL_NUM']),
-                    airlineCode: d['UNIQUE_CARRIER'],
-                    origin: d['ORIGIN'],
-                    destination: d['DEST'],
+                    number: Number(data['FL_NUM']),
+                    airlineCode: data['UNIQUE_CARRIER'],
+                    origin: data['ORIGIN'],
+                    destination: data['DEST'],
                     departure: departureMmt.toDate(),
                     arrival: arrivalMmt.toDate(),
-                    distance: Number(d['DISTANCE']),
+                    distance: Number(data['DISTANCE']),
+                    statistics: {
+                        flightCount: 0,
+                        cancellations: 0,
+                        diverts: 0,
+                        delays: {
+                            monday: 0,
+                            tuesday: 0,
+                            wednesday: 0,
+                            thursday: 0,
+                            friday: 0,
+                            saturday: 0,
+                            sunday: 0,
+                            total: 0,
+                        },
+                        timeliness: 0,
+                    },
                 };
 
                 // TODO: process flights ending the next day
                 flight.duration = arrivalMmt.diff(departureMmt, 'minutes');
                 flight.averageSpeed = (flight.distance / flight.duration) * 60;
 
-                // handle timeliness score
-                flight.timeliness = 0;
-
                 return flight;
             }
-        }
+        },
     );
     return resp;
+}
+
+// TODO: make this configurable in the store
+const cancelWeight = 5;
+const divertWeight = 3;
+const delayWeight = 1;
+
+// TODO: process this server-side to improve performance
+async function buildFlightStatistics(flights: Array<Flight>): Promise<Array<Flight>> {
+    const uniqueflightCodes = new Set(flights.map((f) => f.airlineCode + f.number));
+    let flightsWithStatistics = flights;
+
+    await csv(
+        `${process.env.PUBLIC_URL}/data/2015-AA-UA-DL-flights.csv`,
+        function (data) {
+            const code = data['UNIQUE_CARRIER']+data['FL_NUM'];
+            if (uniqueflightCodes.has(code)) {
+                flightsWithStatistics.forEach(function(f,i) {
+                    if (f.airlineCode + f.number === code) {
+                        flightsWithStatistics[i].statistics.flightCount += 1;
+
+                        if (data['CANCELLED'] === '1') {
+                            flightsWithStatistics[i].statistics.cancellations += 1;
+                        }
+
+                        if (data['DIVERTED'] === '1') {
+                            flightsWithStatistics[i].statistics.diverts += 1;
+                        }
+
+                        const dayName = moment(data['FL_DATE']).format('dddd').toLowerCase();
+                        const delay = Number(data['DEP_DELAY']) + Number(data['ARR_DELAY']);
+                        flightsWithStatistics[i].statistics.delays[dayName] += delay;
+                        flightsWithStatistics[i].statistics.delays.total += delay;
+
+                        const cancelScore = cancelWeight * flightsWithStatistics[i].statistics.cancellations * -1;
+                        const divertScore = divertWeight * flightsWithStatistics[i].statistics.diverts * -1;
+                        const delayScore = delayWeight * flightsWithStatistics[i].statistics.delays.total * -1;
+                        flightsWithStatistics[i].statistics.timeliness = cancelScore + divertScore + delayScore;
+                    }
+                });
+            }
+        },
+    );
+
+    return flightsWithStatistics;
 }
 
 async function fetchAirlines(codes: Array<String>): Promise<Array<Airline>> {
@@ -89,4 +148,5 @@ export {
     fetchAirports,
     fetchFlights,
     fetchAirlines,
+    buildFlightStatistics,
 };

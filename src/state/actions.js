@@ -87,12 +87,14 @@ const Flights = {
     REFRESH_FLIGHTS: 'REFRESH_FLIGHTS',
     fetchFlights: (dispatch: any, origin: String, destination: String) => {
         return api.fetchFlights(origin, destination).then((flights) => {
-            dispatch({
-                type: Flights.REFRESH_FLIGHTS,
-                flights,
+            return api.buildFlightStatistics(flights).then((flightsWithStatistics) => {
+                dispatch({
+                    type: Flights.REFRESH_FLIGHTS,
+                    flights: flightsWithStatistics,
+                });
+                const airlineCodes = [...new Set(flights.map(obj => obj.airlineCode))];
+                Airlines.fetchAirlines(dispatch, airlineCodes);
             });
-            const airlineCodes = [...new Set( flights.map(obj => obj.airlineCode)) ];
-            Airlines.fetchAirlines(dispatch, airlineCodes);
         });
     },
 };

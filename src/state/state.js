@@ -23,7 +23,22 @@ type Flight = {
     duration: Number,
     distance: Number,
     averageSpeed: Number,
-    timeliness: Number,
+    statistics: {
+        flightCount: Number,
+        cancellations: Number,
+        diverts: Number,
+        delays: {
+            monday: Number,
+            tuesday: Number,
+            wednesday: Number,
+            thursday: Number,
+            friday: Number,
+            saturday: Number,
+            sunday: Number,
+            total: Number,
+        },
+        timeliness: Number,
+    }
 };
 
 type SortType = 'departure' | 'arrival' | 'duration' | 'timeliness';
@@ -68,6 +83,7 @@ export type {
     Airline,
     Flight,
     SortType,
+    Filters,
     RootState,
 };
 
