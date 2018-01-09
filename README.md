@@ -1,5 +1,7 @@
 # FlightSearch
 
+![Flight Search](public/screenshots/full-view.png "Flight Search")
+
 ## Running the app
     cd dist/
     python -m SimpleHTTPServer
