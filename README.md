@@ -6,7 +6,38 @@
 
 Now point your browser to http://localhost:8000/index.html.
 
-This is also how we will be testing your app, so please put all the files necessary for the app to run in `dist`.
+To run in development mode:
+
+    npm run start
+
+## Implementation details
+
+This project was developed on deployed using [create-react-app](https://github.com/facebookincubator/create-react-app)
+
+The following tools were used:
+
+* [ESLint](https://eslint.org/docs/user-guide/getting-started): Suggests a coding style to keep it clean.
+* [Flow](https://flow.org/en/docs/react/): Static type checker to identify bugs at development time.
+* [Redux](https://redux.js.org/docs/introduction/): State management.
+* [React Redux](https://github.com/reactjs/react-redux): Connect React components with Redux in a High Order Component style.
+* [Redux Thunk](https://github.com/gaearon/redux-thunk): Middleware to allow dispatching actions without passing redux all the way down the component tree.
+* [D3 Fetch](https://github.com/d3/d3-fetch):  Convenient CSV parsing on top of Fetch to handle the sample data.
+* [React Autocomplete](https://github.com/reactjs/react-autocomplete):  Autocomplete component for airport selectors.
+* [React Flexbox Grid](https://github.com/roylee0704/react-flexbox-grid): Wrapper components for layout with CSS's flexbox.
+
+## TODO
+
+* Unit tests.
+* Implement logic to handle flights ending the next day. This currently triggers some display and sorting issues on the `FlightChart` component.
+* Enhance the `FlightChart` component using an advanced Gantt chart component.
+* Render `FlightDetails` component on hover only for each row
+* Display the time scale dynamically (according to the flights on screen)
+* In the results table, show  the average duration calculated from historical data.
+* In the timescale above the results, display times both in the origin and destination timezones.
+* Make the airport/cities autocomplete tolerate typos (eg. typing “Nwe York” should return results for New York).
+* Allow the user to parametrize your timeliness algorithms – for example, putting more weight on cancellations.
+* Instant resorting of results may be confusing for the user. Make clicking a button sort the results in a visual way (animate the reshuffling of the results).
+* Present more statistics: include not only the average but also the median delay.
 
 ## Data
 
