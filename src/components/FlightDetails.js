@@ -31,6 +31,8 @@ class FlightChart extends Component<{ flight: Flight, airline: Airline }> {
                     {`${averageSpeed}mph`}
                     <br />
                     {`Average delay ${averageDelay}m`}
+                    <br />
+                    {`Cancellations ${flight.statistics.cancellations}`}
                 </Col>
                 <Col xs>
                     <Grid>

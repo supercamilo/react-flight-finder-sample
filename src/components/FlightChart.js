@@ -38,7 +38,7 @@ class FlightChart extends Component<{ flights?: Array<Flight>, filters?: Filters
                 case 'duration':
                     return a.duration - b.duration;
                 case 'timeliness':
-                    return a.timeliness - b.timeliness;
+                    return b.statistics.timeliness - a.statistics.timeliness;
                 default:
                     return 0;
             }

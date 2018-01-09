@@ -31,6 +31,13 @@ The following tools were used:
 * Implement logic to handle flights ending the next day. This currently triggers some display and sorting issues on the `FlightChart` component.
 * Enhance the `FlightChart` component using an advanced Gantt chart component.
 * Display the time scale dynamically (according to the flights on screen)
+* In the results table, show both the timetable duration of the flight and the average duration calculated from historical data.
+* When showing results in the autocomplete, make the matching fragment stand out.
+* In the timescale above the results, display times both in the origin and destination timezones.
+* Make the airport/cities autocomplete tolerate typos (eg. typing “Nwe York” should return results for New York).
+* Allow the user to parametrize your timeliness algorithms – for example, putting more weight on cancellations.
+* Instant resorting of results may be confusing for the user. Make clicking a button sort the results in a visual way (animate the reshuffling of the results).
+* Present more statistics: include not only the average but also the median delay.
 
 ## Data
 
