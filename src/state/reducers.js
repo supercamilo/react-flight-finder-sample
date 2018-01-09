@@ -79,6 +79,9 @@ const filtersReducer = (state: RootState.filters = initialFiltersState, action: 
             nextState = { ...state };
             nextState.airlines.delete(action.code);
             break;
+        case actions.Filters.CHANGE_TIMELY_FILTER:
+            nextState = { ...state, timelyOnly: action.value };
+            break;
         default:
     }
 

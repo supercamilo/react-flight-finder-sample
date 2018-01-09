@@ -25,6 +25,7 @@ class FlightChart extends Component<{ flights?: Array<Flight>, filters?: Filters
 
         const { flights, filters, airlines } = this.props;
 
+        // TODO: add timeliness filter
         const filteredFlights = flights.filter((f) => filters.airlines.has(f.airlineCode));
 
         filteredFlights.sort(function(a, b) {
@@ -35,6 +36,8 @@ class FlightChart extends Component<{ flights?: Array<Flight>, filters?: Filters
                     return moment(b.arrival).valueOf() - moment(a.arrival).valueOf();
                 case 'duration':
                     return a.duration - b.duration;
+                case 'timeliness':
+                    return a.timeliness - b.timeliness;
                 default:
                     return 0;
             }
@@ -80,6 +83,7 @@ class FlightChart extends Component<{ flights?: Array<Flight>, filters?: Filters
         });
 
         // TODO: enhance using an advanced Gantt chart component
+        // TODO: display the time scale dynamically (according to the flights on screen)
 
         return (
             <section className="flightsWrapper">

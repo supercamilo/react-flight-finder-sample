@@ -54,6 +54,9 @@ async function fetchFlights(origin: String, destination: String): Promise<Array<
                 flight.duration = arrivalMmt.diff(departureMmt, 'minutes');
                 flight.averageSpeed = (flight.distance / flight.duration) * 60;
 
+                // handle timeliness score
+                flight.timeliness = 0;
+
                 return flight;
             }
         }

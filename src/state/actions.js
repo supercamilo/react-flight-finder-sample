@@ -35,6 +35,7 @@ const Filters = {
     CHANGE_SORT: 'CHANGE_SORT',
     ADD_AIRLINE_FILTER: 'ADD_AIRLINE_FILTER',
     REMOVE_AIRLINE_FILTER: 'REMOVE_AIRLINE_FILTER',
+    CHANGE_TIMELY_FILTER: 'CHANGE_TIMELY_FILTER',
     selectOrigin: (origin: String, destination: String) => {
         return function (dispatch): any {
             dispatch({
@@ -69,6 +70,14 @@ const Filters = {
             dispatch({
                 type: value ? Filters.ADD_AIRLINE_FILTER : Filters.REMOVE_AIRLINE_FILTER,
                 code,
+            });
+        };
+    },
+    changeTimelyFilter: (value: Boolean) => {
+        return function (dispatch): any {
+            dispatch({
+                type: Filters.CHANGE_TIMELY_FILTER,
+                value,
             });
         };
     },

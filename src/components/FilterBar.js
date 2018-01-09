@@ -33,6 +33,11 @@ class FilterBar extends Component<{ origin?: String, destination?: String, sortB
         dispatch(actions.Filters.changeAirlineFilter(code, value));
     };
 
+    onTimelyFilterChange = (value: Boolean) => {
+        const { dispatch } = this.props;
+        dispatch(actions.Filters.changeTimelyFilter(value));
+    };
+
     render() {
         const {sortBy, airlines, origin, destination } = this.props;
 
@@ -50,6 +55,7 @@ class FilterBar extends Component<{ origin?: String, destination?: String, sortB
                         <button type="button" className={sortBy === 'departure' ? 'selected-sort' : ''} onClick={() => this.onSortChange('departure')}>Departure</button>
                         <button type="button" className={sortBy === 'arrival' ? 'selected-sort' : ''} onClick={() => this.onSortChange('arrival')}>Arrival</button>
                         <button type="button" className={sortBy === 'duration' ? 'selected-sort' : ''} onClick={() => this.onSortChange('duration')}>Duration</button>
+                        <button type="button" className={sortBy === 'timeliness' ? 'selected-sort' : ''} onClick={() => this.onSortChange('timeliness')}>Timeliness</button>
                     </Col>
                     <Col xs>
                         <Row end="xs">
@@ -57,6 +63,9 @@ class FilterBar extends Component<{ origin?: String, destination?: String, sortB
                                 <div className="checkbox-group">
                                     <ul>
                                         {airlinesFilter}
+                                        <li key="timeliness">
+                                            <label><input type="checkbox" defaultChecked={false} onChange={(e) => this.onTimelyFilterChange(e.target.checked)} />Only Timely</label>
+                                        </li>
                                     </ul>
                                 </div>
                             </Col>

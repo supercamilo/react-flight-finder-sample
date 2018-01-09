@@ -23,15 +23,17 @@ type Flight = {
     duration: Number,
     distance: Number,
     averageSpeed: Number,
+    timeliness: Number,
 };
 
-type SortType = 'departure' | 'arrival' | 'duration';
+type SortType = 'departure' | 'arrival' | 'duration' | 'timeliness';
 
 type Filters = {
     origin: String,
     destination: String,
     sortBy: SortType,
     airlines?: Set<String>,
+    timelyOnly: Boolean,
 };
 
 type RootState = {
@@ -56,6 +58,7 @@ const initialState: RootState = {
         destination: null,
         sortBy: 'departure',
         airlines: new Set(),
+        timelyOnly: false,
     },
 };
 
