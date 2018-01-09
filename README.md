@@ -1,6 +1,30 @@
 # FlightSearch
 
+Flight search engine that allows the user to make decisions about flights basing on historical data (on a CSV file, no back-end code).
+
 ![Flight Search](public/screenshots/full-view.png "Flight Search")
+
+## Functionality
+
+* When the user starts typing a city or airport code in any of the fields, it gets autocompleted
+* If there’s input in one of the fields, the autocompletion propositions in the other are constrained only to cities/airports that have a connection from/to the city that’s already input.
+* A flight is represented by a bar with its code (eg. AA32). The length of the bar is proportional to the length of the flight, and its positioning in the table matches the flight’s departure and arrival times.
+* Clicking on one of the buttons sorts the table according in a way matching the clicked button’s label.
+* If a checkbox is unchecked, the results for its airline are filtered out. Checking it again makes the results appear again.
+* If the user hovers on one of the results. A tooltip with flight details will appear:
+    * Full airline name.
+    * Flight departure.
+    * Flight arrival.
+    * Flight length.
+    * Flight distance.
+    * Average speed.
+    * Average delay
+    * Cancellation count
+    * A graph showing what is the average delay for every day of the week.
+* The results table shows the flight duration
+* When showing results in the autocomplete, the matching fragment stands out.
+* An algorithm scores flights for timeliness. It takes in account the delays, cancellations, and how often the plane gets diverted to a different airport. Clicking on the “timeliness” button sorts the flights accordingly.
+* Checking the “Only Timely Flight” hides the unreliable flights based on a negative timeliness score.
 
 ## Running the app
     cd dist/
