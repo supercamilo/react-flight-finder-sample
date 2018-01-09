@@ -27,7 +27,10 @@ class FlightChart extends Component<{ flights?: Array<Flight>, filters?: Filters
         const { flights, filters, airlines } = this.props;
 
         // TODO: add timeliness filter
-        const filteredFlights = flights.filter((f) => filters.airlines.has(f.airlineCode));
+        const filteredFlights = flights.filter((f) =>
+            filters.airlines.has(f.airlineCode) &&
+            (!filters.timelyOnly || f.statistics.timeliness >= 0  )
+        );
 
         filteredFlights.sort(function(a, b) {
             switch (filters.sortBy) {
