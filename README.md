@@ -30,6 +30,7 @@ The following tools were used:
 * Unit tests.
 * Implement logic to handle flights ending the next day. This currently triggers some display and sorting issues on the `FlightChart` component.
 * Enhance the `FlightChart` component using an advanced Gantt chart component.
+* Render `FlightDetails` component on hover only for each row
 * Display the time scale dynamically (according to the flights on screen)
 * In the results table, show both the timetable duration of the flight and the average duration calculated from historical data.
 * When showing results in the autocomplete, make the matching fragment stand out.

@@ -51,12 +51,14 @@ class FlightChart extends Component<{ flights?: Array<Flight>, filters?: Filters
         const minutesInADay = 1440;
 
         const flightList = filteredFlights.map((flight, index) => {
-            const width = ((flight.duration / minutesInADay) * 100) + '%';
+            const width = `${((flight.duration / minutesInADay) * 100)}%`;
             const departure = moment(flight.departure);
             const midnight = departure.clone().startOf('day');
             const startMinutes = departure.diff(midnight, 'minutes');
-            const marginLeft = ((startMinutes / minutesInADay) * 100) + '%';
+            const marginLeft = `${((startMinutes / minutesInADay) * 100)}%`;
             const airline = airlines.filter((a) => a.code === flight.airlineCode)[0];
+
+            // Todo: Render flight details on hover only for each row
 
             return (
                 <Row key={`${index}-${flight.airlineCode}-${flight.number}`} className="flighRow">

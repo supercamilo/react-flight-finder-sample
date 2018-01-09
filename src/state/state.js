@@ -24,7 +24,16 @@ type Flight = {
     distance: Number,
     averageSpeed: Number,
     statistics: {
-        flightCount: Number,
+        flightCounts: {
+            monday: Number,
+            tuesday: Number,
+            wednesday: Number,
+            thursday: Number,
+            friday: Number,
+            saturday: Number,
+            sunday: Number,
+            total: Number,
+        },
         cancellations: Number,
         diverts: Number,
         delays: {

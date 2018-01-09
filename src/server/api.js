@@ -50,7 +50,16 @@ async function fetchFlights(origin: String, destination: String): Promise<Array<
                     arrival: arrivalMmt.toDate(),
                     distance: Number(data['DISTANCE']),
                     statistics: {
-                        flightCount: 0,
+                        flightCounts: {
+                            monday: 0,
+                            tuesday: 0,
+                            wednesday: 0,
+                            thursday: 0,
+                            friday: 0,
+                            saturday: 0,
+                            sunday: 0,
+                            total: 0,
+                        },
                         cancellations: 0,
                         diverts: 0,
                         delays: {
@@ -95,7 +104,10 @@ async function buildFlightStatistics(flights: Array<Flight>): Promise<Array<Flig
             if (uniqueflightCodes.has(code)) {
                 flightsWithStatistics.forEach(function(f,i) {
                     if (f.airlineCode + f.number === code) {
-                        flightsWithStatistics[i].statistics.flightCount += 1;
+                        const dayName = moment(data['FL_DATE']).format('dddd').toLowerCase();
+
+                        flightsWithStatistics[i].statistics.flightCounts.total += 1;
+                        flightsWithStatistics[i].statistics.flightCounts[dayName] += 1;
 
                         if (data['CANCELLED'] === '1') {
                             flightsWithStatistics[i].statistics.cancellations += 1;
@@ -105,7 +117,6 @@ async function buildFlightStatistics(flights: Array<Flight>): Promise<Array<Flig
                             flightsWithStatistics[i].statistics.diverts += 1;
                         }
 
-                        const dayName = moment(data['FL_DATE']).format('dddd').toLowerCase();
                         const delay = Number(data['DEP_DELAY']) + Number(data['ARR_DELAY']);
                         flightsWithStatistics[i].statistics.delays[dayName] += delay;
                         flightsWithStatistics[i].statistics.delays.total += delay;

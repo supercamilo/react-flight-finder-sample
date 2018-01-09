@@ -145,6 +145,32 @@ button {
   padding: 0;
 }
 
+.delayGraphWrapper {
+  text-align: center;
+  border: 1px solid #BEBEBE;
+  padding: 5px 20px !important;
+  font-size: 0.7em;
+}
+
+.delayGraphWrapper .delayGraphTitle {
+  text-align: center;
+  font-size: 1.3em;
+}
+
+.delayBarWrapper {
+  height: 120px;
+  position: relative;
+  text-align: center;
+}
+
+.delayBar {
+  background-color: #E93E6B;
+  border: 1px solid #E93E6B;
+  width: 20px;
+  position: absolute;
+  bottom: 0;
+}
+
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
