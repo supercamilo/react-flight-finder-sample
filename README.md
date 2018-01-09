@@ -32,8 +32,7 @@ The following tools were used:
 * Enhance the `FlightChart` component using an advanced Gantt chart component.
 * Render `FlightDetails` component on hover only for each row
 * Display the time scale dynamically (according to the flights on screen)
-* In the results table, show both the timetable duration of the flight and the average duration calculated from historical data.
-* When showing results in the autocomplete, make the matching fragment stand out.
+* In the results table, show  the average duration calculated from historical data.
 * In the timescale above the results, display times both in the origin and destination timezones.
 * Make the airport/cities autocomplete tolerate typos (eg. typing “Nwe York” should return results for New York).
 * Allow the user to parametrize your timeliness algorithms – for example, putting more weight on cancellations.

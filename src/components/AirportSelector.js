@@ -75,6 +75,15 @@ class AirportSelector extends Component<{ originAirports?: Array<Airport>, desti
         dispatch(actions.Filters.selectDestination(origin, code));
     };
 
+    getHighlightedText(text, highlight) {
+        let parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+        return <span> { parts.map((part, i) =>
+            <span key={i} style={part.toLowerCase() === highlight.toLowerCase() ? { fontWeight: 'bold', color: '#E93E6B' } : {} }>
+            { part }
+        </span>)
+        } </span>;
+    };
+
     render() {
         const { originSearchTerm, destinationSearchTem } = this.state;
         const { originAirports, destinationAirports } = this.props;
@@ -87,7 +96,7 @@ class AirportSelector extends Component<{ originAirports?: Array<Airport>, desti
                         items={originAirports}
                         renderItem={(item, isHighlighted) =>
                             <div key={item.code} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                {`${item.code} - ${item.city}`}
+                                {this.getHighlightedText(`${item.code} - ${item.city}`, originSearchTerm)};
                             </div>
                         }
                         value={originSearchTerm}
@@ -101,7 +110,7 @@ class AirportSelector extends Component<{ originAirports?: Array<Airport>, desti
                         items={destinationAirports}
                         renderItem={(item, isHighlighted) =>
                             <div key={item.code} style={{ textAlign: 'left', background: isHighlighted ? '#F4F7F9' : 'white' }}>
-                                {`${item.code} - ${item.city}`}
+                                {this.getHighlightedText(`${item.code} - ${item.city}`, destinationSearchTem)};
                             </div>
                         }
                         value={destinationSearchTem}

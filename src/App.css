@@ -121,7 +121,8 @@ button {
   background-color: #BEBEBE;
   padding: 10px;
   textAlign: center;
-  font-weight: bold;
+  overflow-x: visible;
+  white-space: nowrap;
 }
 
 .flightBar .flightDetails {
