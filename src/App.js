@@ -20,10 +20,10 @@ class App extends Component {
                             <h1 className="App-title">Flight Finder</h1>
                         </header>
                     </Row>
-                    <Row>
+                    <Row style={{ paddingBottom: 0}}>
                         <FilterBar />
                     </Row>
-                    <Row>
+                    <Row style={{ paddingTop: 0}}>
                         <FlightChart />
                     </Row>
                 </Grid>

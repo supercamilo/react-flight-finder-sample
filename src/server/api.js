@@ -2,6 +2,7 @@
 
 import type { Airport, Flight, Airline } from '../state/state';
 import { csv } from 'd3-fetch';
+import moment from 'moment';
 
 async function fetchAirports(searchTerm: String, airportType, counterpartCode: String): Promise<Array<Airport>> {
     const keys = [];
@@ -34,19 +35,24 @@ async function fetchFlights(origin: String, destination: String): Promise<Array<
                 (!origin || d['ORIGIN'] === origin) &&
                 (!destination || d['DEST'] === destination)
             ) {
+                const departure = d['DEP_TIME'].padStart(4, '0');
+                const departureMmt = moment(`${d['FL_DATE']} ${departure.substring(0, 2)}:${departure.substring(2, 4)}:00`);
+                const arrival = d['ARR_TIME'].padStart(4, '0');
+                const arrivalMmt = moment(`${d['FL_DATE']} ${arrival.substring(0, 2)}:${arrival.substring(2, 4)}:00`);
+
                 const flight: Flight = {
                     number: Number(d['FL_NUM']),
                     airlineCode: d['UNIQUE_CARRIER'],
                     origin: d['ORIGIN'],
                     destination: d['DEST'],
-                    departure: Number(d['DEP_TIME']),
-                    arrival: Number(d['ARR_TIME']),
+                    departure: departureMmt.toDate(),
+                    arrival: arrivalMmt.toDate(),
                     distance: Number(d['DISTANCE']),
                 };
 
-                // TODO: verify this formula and take date and maybe timezone into account
-                flight.duration = flight.arrival - flight.departure;
-                flight.averageSpeed = flight.distance / flight.duration;
+                // TODO: process flights ending the next day
+                flight.duration = arrivalMmt.diff(departureMmt, 'minutes');
+                flight.averageSpeed = (flight.distance / flight.duration) * 60;
 
                 return flight;
             }

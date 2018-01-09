@@ -1,3 +1,8 @@
+* {
+  font-family: Roboto;
+  color: #4a4a4a;
+}
+
 .App {
   text-align: center;
 }
@@ -12,39 +17,134 @@
 }
 
 .App-title {
-  font-size: 1.5em;
+  font-size: 3em;
+  font-family: Pacifico, Roboto;
+  color: #E93E6B;
+  margin: 0;
 }
 
 .App-intro {
   font-size: large;
 }
 
-.App > .row {
-  padding: 20px;
+.row {
+  padding: 10px 0;
 }
 
-.row .row {
+.App > .row {
   padding: 20px 0;
 }
 
+aside {
+  width: 100%;
+}
+
+input[role=combobox] {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border:1px solid #BEBEBE;
+  padding: 10px;
+  margin:0px;
+  -webkit-transition: all 0.30s ease-in-out;
+  -moz-transition: all 0.30s ease-in-out;
+  -ms-transition: all 0.30s ease-in-out;
+  -o-transition: all 0.30s ease-in-out;
+  outline: none;
+  margin-right: 10px;
+  min-width: 300px;
+}
+
+button {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  padding: 15px;
+  background: #435e69;
+  border-top-style: none;
+  border-right-style: none;
+  border-left-style: none;
+  color: #fff;
+  cursor: pointer;
+}
+
 .selected-sort {
-  background-color: black;
+  background-color: #E93E6B;
   color: white;
 }
 
-.checkbox-group {
-  width: 20em;
-  overflow: auto;
+.checkbox-group ul {
+  margin: 0;
+  list-style: none;
 }
 
-.checkbox-group p {
-  width: 7em;
-  text-align: right;
+.checkbox-group ul li {
+  float: left;
+  margin-right: 5px;
+  cursor: pointer;
 }
-.checkbox-group label {
-  width: 12em;
-  float: right;
+
+.flightsWrapper {
+  border: 1px solid #BEBEBE;
+  padding: 20px;
 }
+
+.flightsWrapper .col-xs {
+  text-align: left;
+  padding: 0;
+}
+
+.flightsTimeLine {
+  background-color: #E93E6B;
+  padding: 3px;
+  width: 100%;
+  position: relative;
+  margin-right: 10px;
+}
+
+.flightsTimeLine .arrow-right {
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 15px solid #E93E6B;
+  position: absolute;
+  top: -11.5px;
+  right: -10px;
+}
+
+.flighRow {
+  position: relative;
+}
+
+.flightBar {
+  background-color: #BEBEBE;
+  padding: 10px;
+  textAlign: center;
+  font-weight: bold;
+}
+
+.flightBar .flightDetails {
+  display: none;
+}
+
+.flightBar:hover .flightDetails {
+  display: inline;
+  position: absolute;
+  border: 1px solid #BEBEBE;
+  background-color: #FFFFFF;
+  z-index: 999;
+  width: 300px;
+  font-weight: normal;
+  text-align: left;
+  padding: 10px;
+}
+
+.flightBar:hover .flightDetails h3 {
+  margin: 0;
+  padding: 0;
+}
+
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
